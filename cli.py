@@ -36,7 +36,8 @@ def _add_model_parser(parser):
                                                  'vgg11', 'mobilenet_v3_large', 'mobilenet_v3_small',
                                                  'inception_resnet_v2', 'inception_v4', 'efficientnet_b0',
                                                  'efficientnet_b1', 'efficientnet_b2', 'efficientnet_b3',
-                                                 'efficientnet_b4', 'vit_base_patch16_224'],
+                                                 'efficientnet_b4', 'vit_base_patch16_224',
+                                                 'convnext_tiny', 'convnext_small', 'convnext_base', 'convnext_large'],
                              default='resnet50', help='choose the model you want to train on')
 
 
