@@ -6,13 +6,6 @@ import numpy as np
 import os
 from collections import Counter
 
-import torchvision
-from torchvision.models import resnet18, resnet34, resnet50, resnet101, resnet152, \
-    inception_v3, vgg11, densenet121, densenet161, densenet169, densenet201, \
-    alexnet, squeezenet1_0, shufflenet_v2_x1_0, wide_resnet50_2, wide_resnet101_2,\
-    mobilenet_v2, mobilenet_v3_large, mobilenet_v3_small, \
-    convnext_tiny, convnext_small, convnext_base, convnext_large
-
 from torchvision.datasets import ImageFolder
 import torchvision.transforms as transforms
 
@@ -114,56 +107,9 @@ def update_optimizer(optimizer, lr_schedule, epoch):
 
 
 def get_model(args, n_classes):
-    pytorch_models = {'resnet18': resnet18, 'resnet34': resnet34, 'resnet50': resnet50, 'resnet101': resnet101,
-                      'resnet152': resnet152, 'densenet121': densenet121, 'densenet161': densenet161,
-                      'densenet169': densenet169, 'densenet201': densenet201, 'mobilenet_v2': mobilenet_v2,
-                      'inception_v3': inception_v3, 'alexnet': alexnet, 'squeezenet': squeezenet1_0,
-                      'shufflenet': shufflenet_v2_x1_0, 'wide_resnet50_2': wide_resnet50_2,
-                      'wide_resnet101_2': wide_resnet101_2, 'vgg11': vgg11, 'mobilenet_v3_large': mobilenet_v3_large,
-                      'mobilenet_v3_small': mobilenet_v3_small
-                      }
-    timm_models = {'inception_resnet_v2', 'inception_v4', 'efficientnet_b0', 'efficientnet_b1',
-                   'efficientnet_b2', 'efficientnet_b3', 'efficientnet_b4', 'vit_base_patch16_224',
-                   'convnext_tiny', 'convnext_small', 'convnext_base', 'convnext_large'
-                   }
+    timm_models = timm.list_models()
 
-    if args.model in pytorch_models.keys() and not args.pretrained:
-        if args.model == 'inception_v3':
-            model = torchvision.models.get_model(args.model, weights=None, num_classes=n_classes, aux_logits=False)
-        else:
-            model = torchvision.models.get_model(args.model, weights=None, num_classes=n_classes)
-    elif args.model in pytorch_models.keys() and args.pretrained:
-        if args.model in {'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'wide_resnet50_2',
-                          'wide_resnet101_2', 'shufflenet'}:
-            model = torchvision.models.get_model(args.model, weights="DEFAULT")
-            num_ftrs = model.fc.in_features
-            model.fc = nn.Linear(num_ftrs, n_classes)
-        elif args.model in {'alexnet', 'vgg11'}:
-            model = torchvision.models.get_model(args.model, weights="DEFAULT")
-            num_ftrs = model.classifier[6].in_features
-            model.classifier[6] = nn.Linear(num_ftrs, n_classes)
-        elif args.model in {'densenet121', 'densenet161', 'densenet169', 'densenet201'}:
-            model = torchvision.models.get_model(args.model, weights="DEFAULT")
-            num_ftrs = model.classifier.in_features
-            model.classifier = nn.Linear(num_ftrs, n_classes)
-        elif args.model == 'mobilenet_v2':
-            model = torchvision.models.get_model(args.model, weights="DEFAULT")
-            num_ftrs = model.classifier[1].in_features
-            model.classifier[1] = nn.Linear(num_ftrs, n_classes)
-        elif args.model == 'inception_v3':
-            model = torchvision.models.get_model(args.model, weights="DEFAULT", aux_logits=False)
-            num_ftrs = model.fc.in_features
-            model.fc = nn.Linear(num_ftrs, n_classes)
-        elif args.model == 'squeezenet':
-            model = torchvision.models.get_model(args.model, weights="DEFAULT")
-            model.classifier[1] = nn.Conv2d(512, n_classes, kernel_size=(1, 1), stride=(1, 1))
-            model.num_classes = n_classes
-        elif args.model == 'mobilenet_v3_large' or args.model == 'mobilenet_v3_small':
-            model = torchvision.models.get_model(args.model, weights="DEFAULT")
-            num_ftrs = model.classifier[-1].in_features
-            model.classifier[-1] = nn.Linear(num_ftrs, n_classes)
-
-    elif args.model in timm_models:
+    if args.model in timm_models:
         model = timm.create_model(args.model, pretrained=args.pretrained, num_classes=n_classes)
     else:
         raise NotImplementedError
