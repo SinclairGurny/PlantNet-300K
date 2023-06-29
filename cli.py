@@ -1,5 +1,5 @@
+import timm
 import torch
-
 
 def add_all_parsers(parser):
     _add_loss_parser(parser)
