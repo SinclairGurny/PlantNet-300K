@@ -7,12 +7,9 @@ import os
 from collections import Counter
 
 import torchvision
-from torchvision.models import \
-    resnet18, resnet34, resnet50, resnet101, resnet152, \
-    inception_v3, vgg11 \
-    densenet121, densenet161, densenet169, densenet201, \
-    alexnet, squeezenet1_0, shufflenet_v2_x1_0, \
-    wide_resnet50_2, wide_resnet101_2,\
+from torchvision.models import resnet18, resnet34, resnet50, resnet101, resnet152, \
+    inception_v3, vgg11, densenet121, densenet161, densenet169, densenet201, \
+    alexnet, squeezenet1_0, shufflenet_v2_x1_0, wide_resnet50_2, wide_resnet101_2,\
     mobilenet_v2, mobilenet_v3_large, mobilenet_v3_small, \
     convnext_tiny, convnext_small, convnext_base, convnext_large
 
