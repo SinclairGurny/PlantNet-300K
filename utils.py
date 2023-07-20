@@ -113,7 +113,9 @@ def get_model(args, n_classes):
         model = timm.create_model(args.model, pretrained=args.pretrained, num_classes=n_classes)
     else:
         raise NotImplementedError
-
+        
+    if args.model_file is not None and len(args.model_file) > 0:
+        load_model(model, args.model_file, args.use_gpu)
     return model
 
 

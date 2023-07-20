@@ -31,6 +31,8 @@ def _add_model_parser(parser):
     group_model = parser.add_argument_group('Model parameters')
     group_model.add_argument('--model', choices=timm.list_models(),
                              default='resnet50', help='choose the model you want to train on')
+    group_model.add_argument('--model_file', type=str,
+                             help='choose location of file which contains model weights')
 
 
 def _add_hardware_parser(parser):
