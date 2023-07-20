@@ -115,6 +115,7 @@ def get_model(args, n_classes):
         raise NotImplementedError
         
     if args.model_file is not None and len(args.model_file) > 0:
+        print("Loading model weights from file")
         load_model(model, args.model_file, args.use_gpu)
     return model
 
